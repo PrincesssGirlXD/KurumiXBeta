@@ -1,25 +1,20 @@
-import requests
+from gtts import gTTS
+from pyrogram import Client
+API_ID = 28624076
+API_HASH = "439d58a783f6e70086ea81ba5baa5207"
+TOKEN = "5852845046:AAGz88AXp9Y5Ij-f7q_cgnFQEqgV7oFb2KY"
+app = Client(
+    ":memory:",
+    API_ID,
+    API_HASH,
+    TOKEN
+   )
 
-RUN_STRINGS = (
-    "Now you see me, now you don't." "ε=ε=ε=ε=┌(;￣▽￣)┘",
-    "Get back here!",
-    "REEEEEEEEEEEEEEEEEE!!!!!!!",
-    "Look out for the wall!",
-    "Don't leave me alone with them!!",
-    "You've got company!",
-    "Chotto matte!",
-    "Yare yare daze",
-    "*Naruto run activated*",
-    "*Nezuko run activated*",
-    "Hey take responsibilty for what you just did!",
-    "May the odds be ever in your favour.",
-    "Run everyone, they just dropped a bomb 💣💣",
-    "And they disappeared forever, never to be seen again.",
-    "Legend has it, they're still running.",
-    "Hasta la vista, baby.",
-    "Ah, what a waste. I liked that one.",
-    "As The Doctor would say... RUN!",
-)
+@app.on_message()
+def text_to_speech(client, message):
+    text = message.text
+    tts = gTTS(text, lang='en', slow=False, voice='en-us-x-sfg#female_2-local')
+    tts.save("voice.mp3")
+    app.send_audio(message.chat.id, audio="voice.mp3")
 
-X = random.choice(RUN_STRINGS)
-print(X)
+app.run()
